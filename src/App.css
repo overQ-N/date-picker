@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --sunzi-theme-color: rgba(245, 79, 35);
+  --sunzi-theme-color-006: rgba(245, 79, 35, 0.06);
+  --sunzi-theme-color-o1: rgba(245, 79, 35, .1);
+  --sunzi-theme-color-o2: rgba(245, 79, 35, .2);
+  --sunzi-theme-color-o3: rgba(245, 79, 35, .3);
+  --sunzi-theme-color-o4: rgba(245, 79, 35, .4);
+  --sunzi-theme-color-o5: rgba(245, 79, 35, .5);
+  --sunzi-theme-color-o6: rgba(245, 79, 35, .6);
+  --sunzi-theme-color-o7: rgba(245, 79, 35, .7);
+  --sunzi-theme-color-o8: rgba(245, 79, 35, .8);
+}
+
+@layer components {
+  .inner-border::after {
+    content: '';
+    @apply tw-pointer-events-none tw-absolute tw-bottom-0 tw-left-0 tw-right-0 tw-top-0 tw-border;
+  }
+}
+
+/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
+/* stylelint-disable no-duplicate-selectors */
+/* stylelint-disable */
+/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */

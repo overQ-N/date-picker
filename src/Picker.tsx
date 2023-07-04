@@ -606,8 +606,8 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
             className,
             {
               [`${prefixCls}-disabled`]: disabled,
-              [`${prefixCls}-focused`]: focused,
-              [`${prefixCls}-rtl`]: direction === "rtl",
+              [` tw-border tw-border-theme-default`]: focused,
+              // [" lt"]: direction === "rtl",
             }
           )}
           style={style}

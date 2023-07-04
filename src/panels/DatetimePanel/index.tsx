@@ -1,21 +1,24 @@
-import classNames from 'classnames';
-import KeyCode from 'rc-util/lib/KeyCode';
-import * as React from 'react';
-import type { DisabledTime, PanelRefProps } from '../../interface';
-import { tuple } from '../../utils/miscUtil';
-import { setDateTime as setTime } from '../../utils/timeUtil';
-import type { DatePanelProps } from '../DatePanel';
-import DatePanel from '../DatePanel';
-import type { SharedTimeProps } from '../TimePanel';
-import TimePanel from '../TimePanel';
+import classNames from "classnames";
+import KeyCode from "rc-util/lib/KeyCode";
+import * as React from "react";
+import type { DisabledTime, PanelRefProps } from "../../interface";
+import { tuple } from "../../utils/miscUtil";
+import { setDateTime as setTime } from "../../utils/timeUtil";
+import type { DatePanelProps } from "../DatePanel";
+import DatePanel from "../DatePanel";
+import type { SharedTimeProps } from "../TimePanel";
+import TimePanel from "../TimePanel";
 
 export type DatetimePanelProps<DateType> = {
   disabledTime?: DisabledTime<DateType>;
   showTime?: boolean | SharedTimeProps<DateType>;
   defaultValue?: DateType;
-} & Omit<DatePanelProps<DateType>, 'disabledHours' | 'disabledMinutes' | 'disabledSeconds'>;
+} & Omit<
+  DatePanelProps<DateType>,
+  "disabledHours" | "disabledMinutes" | "disabledSeconds"
+>;
 
-const ACTIVE_PANEL = tuple('date', 'time');
+const ACTIVE_PANEL = tuple("date", "time");
 type ActivePanelType = (typeof ACTIVE_PANEL)[number];
 
 function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
@@ -31,12 +34,14 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
     cellRender,
   } = props;
   const panelPrefixCls = `${prefixCls}-datetime-panel`;
-  const [activePanel, setActivePanel] = React.useState<ActivePanelType | null>(null);
+  const [activePanel, setActivePanel] = React.useState<ActivePanelType | null>(
+    null
+  );
 
   const dateOperationRef = React.useRef<PanelRefProps>({});
   const timeOperationRef = React.useRef<PanelRefProps>({});
 
-  const timeProps = typeof showTime === 'object' ? { ...showTime } : {};
+  const timeProps = typeof showTime === "object" ? { ...showTime } : {};
 
   // ======================= Keyboard =======================
   function getNextActive(offset: number) {
@@ -68,7 +73,8 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
 
       // Operate on current active panel
       if (activePanel) {
-        const ref = activePanel === 'date' ? dateOperationRef : timeOperationRef;
+        const ref =
+          activePanel === "date" ? dateOperationRef : timeOperationRef;
 
         if (ref.current && ref.current.onKeyDown) {
           ref.current.onKeyDown(event);
@@ -78,8 +84,12 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
       }
 
       // Switch first active panel if operate without panel
-      if ([KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN].includes(event.which)) {
-        setActivePanel('date');
+      if (
+        [KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN].includes(
+          event.which
+        )
+      ) {
+        setActivePanel("date");
         return true;
       }
 
@@ -90,31 +100,40 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
   };
 
   // ======================== Events ========================
-  const onInternalSelect = (date: DateType, source: 'date' | 'time') => {
+  const onInternalSelect = (date: DateType, source: "date" | "time") => {
     let selectedDate = date;
 
-    if (source === 'date' && !value && timeProps.defaultValue) {
+    if (source === "date" && !value && timeProps.defaultValue) {
       // Date with time defaultValue
       selectedDate = generateConfig.setHour(
         selectedDate,
-        generateConfig.getHour(timeProps.defaultValue),
+        generateConfig.getHour(timeProps.defaultValue)
       );
       selectedDate = generateConfig.setMinute(
         selectedDate,
-        generateConfig.getMinute(timeProps.defaultValue),
+        generateConfig.getMinute(timeProps.defaultValue)
       );
       selectedDate = generateConfig.setSecond(
         selectedDate,
-        generateConfig.getSecond(timeProps.defaultValue),
+        generateConfig.getSecond(timeProps.defaultValue)
       );
-    } else if (source === 'time' && !value && defaultValue) {
-      selectedDate = generateConfig.setYear(selectedDate, generateConfig.getYear(defaultValue));
-      selectedDate = generateConfig.setMonth(selectedDate, generateConfig.getMonth(defaultValue));
-      selectedDate = generateConfig.setDate(selectedDate, generateConfig.getDate(defaultValue));
+    } else if (source === "time" && !value && defaultValue) {
+      selectedDate = generateConfig.setYear(
+        selectedDate,
+        generateConfig.getYear(defaultValue)
+      );
+      selectedDate = generateConfig.setMonth(
+        selectedDate,
+        generateConfig.getMonth(defaultValue)
+      );
+      selectedDate = generateConfig.setDate(
+        selectedDate,
+        generateConfig.getDate(defaultValue)
+      );
     }
 
     if (onSelect) {
-      onSelect(selectedDate, 'mouse');
+      onSelect(selectedDate, "mouse");
     }
   };
 
@@ -123,7 +142,7 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
 
   return (
     <div
-      className={classNames(panelPrefixCls, {
+      className={classNames("tw-flex tw-flex-col", panelPrefixCls, {
         [`${panelPrefixCls}-active`]: activePanel,
       })}
     >
@@ -131,15 +150,17 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         {...props}
         cellRender={cellRender}
         operationRef={dateOperationRef}
-        active={activePanel === 'date'}
+        active={activePanel === "date"}
         onSelect={(date) => {
           onInternalSelect(
             setTime(
               generateConfig,
               date,
-              !value && typeof showTime === 'object' ? showTime.defaultValue : null,
+              !value && typeof showTime === "object"
+                ? showTime.defaultValue
+                : null
             ),
-            'date',
+            "date"
           );
         }}
       />
@@ -147,7 +168,8 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         {...props}
         cellRender={
           cellRender
-            ? (current, info) => cellRender(current as any, { ...info, type: 'time' })
+            ? (current, info) =>
+                cellRender(current as any, { ...info, type: "time" })
             : undefined
         }
         format={undefined}
@@ -156,9 +178,9 @@ function DatetimePanel<DateType>(props: DatetimePanelProps<DateType>) {
         disabledTime={null}
         defaultValue={undefined}
         operationRef={timeOperationRef}
-        active={activePanel === 'time'}
+        active={activePanel === "time"}
         onSelect={(date) => {
-          onInternalSelect(date, 'time');
+          onInternalSelect(date, "time");
         }}
       />
     </div>

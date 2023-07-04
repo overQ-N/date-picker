@@ -1,10 +1,10 @@
-import classNames from 'classnames';
-import * as React from 'react';
-import type { GenerateConfig } from '../generate';
-import type { PanelMode } from '../interface';
-import PanelContext from '../PanelContext';
-import { getCellDateDisabled } from '../utils/dateUtil';
-import { getLastDay } from '../utils/timeUtil';
+import classNames from "classnames";
+import * as React from "react";
+import type { GenerateConfig } from "../generate";
+import type { PanelMode } from "../interface";
+import PanelContext from "../PanelContext";
+import { getCellDateDisabled } from "../utils/dateUtil";
+import { getLastDay } from "../utils/timeUtil";
 
 export type PanelBodyProps<DateType> = {
   prefixCls: string;
@@ -20,7 +20,10 @@ export type PanelBodyProps<DateType> = {
   getCellClassName: (date: DateType) => Record<string, boolean | undefined>;
   getCellDate: (date: DateType, offset: number) => DateType;
   getCellText: (date: DateType) => React.ReactNode;
-  getCellNode?: (date: DateType, wrapperNode: React.ReactElement) => React.ReactNode;
+  getCellNode?: (
+    date: DateType,
+    wrapperNode: React.ReactElement
+  ) => React.ReactNode;
   titleCell?: (date: DateType) => string;
   generateConfig: GenerateConfig<DateType>;
 
@@ -47,7 +50,8 @@ export default function PanelBody<DateType>({
   titleCell,
   headerCells,
 }: PanelBodyProps<DateType>) {
-  const { onDateMouseEnter, onDateMouseLeave, mode } = React.useContext(PanelContext);
+  const { onDateMouseEnter, onDateMouseLeave, mode } =
+    React.useContext(PanelContext);
 
   const cellPrefixCls = `${prefixCls}-cell`;
 
@@ -77,7 +81,11 @@ export default function PanelBody<DateType>({
       }
 
       const title = titleCell && titleCell(currentDate);
-      const inner = <div className={`${cellPrefixCls}-inner`}>{getCellText(currentDate)}</div>;
+      const inner = (
+        <div className={`${cellPrefixCls}-inner`}>
+          {getCellText(currentDate)}
+        </div>
+      );
       row.push(
         <td
           key={j}
@@ -85,10 +93,11 @@ export default function PanelBody<DateType>({
           className={classNames(cellPrefixCls, {
             [`${cellPrefixCls}-disabled`]: disabled,
             [`${cellPrefixCls}-start`]:
-              getCellText(currentDate) === 1 || (picker === 'year' && Number(title) % 10 === 0),
+              getCellText(currentDate) === 1 ||
+              (picker === "year" && Number(title) % 10 === 0),
             [`${cellPrefixCls}-end`]:
               title === getLastDay(generateConfig, currentDate) ||
-              (picker === 'year' && Number(title) % 10 === 9),
+              (picker === "year" && Number(title) % 10 === 9),
             ...getCellClassName(currentDate),
           })}
           onClick={() => {
@@ -108,19 +117,24 @@ export default function PanelBody<DateType>({
           }}
         >
           {getCellNode ? getCellNode(currentDate, inner) : inner}
-        </td>,
+        </td>
       );
     }
 
     rows.push(
       <tr key={i} className={rowClassName && rowClassName(rowStartDate!)}>
         {row}
-      </tr>,
+      </tr>
     );
   }
 
   return (
-    <div className={`${prefixCls}-body`}>
+    <div
+      className={classNames(
+        "tw-text-center tw-border-collapse",
+        `${prefixCls}-body`
+      )}
+    >
       <table className={`${prefixCls}-content`}>
         {headerCells && (
           <thead>

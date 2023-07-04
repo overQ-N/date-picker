@@ -1,9 +1,10 @@
-import * as React from 'react';
-import YearHeader from './YearHeader';
-import YearBody, { YEAR_COL_COUNT } from './YearBody';
-import type { PanelSharedProps, PanelMode, CellRender } from '../../interface';
-import { createKeyDownHandler } from '../../utils/uiUtil';
-import { YEAR_DECADE_COUNT } from './constant';
+import * as React from "react";
+import YearHeader from "./YearHeader";
+import YearBody, { YEAR_COL_COUNT } from "./YearBody";
+import type { PanelSharedProps, PanelMode, CellRender } from "../../interface";
+import { createKeyDownHandler } from "../../utils/uiUtil";
+import { YEAR_DECADE_COUNT } from "./constant";
+import classNames from "classnames";
 
 export type YearPanelProps<DateType> = {
   sourceMode: PanelMode;
@@ -29,27 +30,27 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
 
   // ======================= Keyboard =======================
   operationRef.current = {
-    onKeyDown: event =>
+    onKeyDown: (event) =>
       createKeyDownHandler(event, {
-        onLeftRight: diff => {
-          onSelect(generateConfig.addYear(value || viewDate, diff), 'key');
+        onLeftRight: (diff) => {
+          onSelect(generateConfig.addYear(value || viewDate, diff), "key");
         },
-        onCtrlLeftRight: diff => {
+        onCtrlLeftRight: (diff) => {
           onSelect(
             generateConfig.addYear(value || viewDate, diff * YEAR_DECADE_COUNT),
-            'key',
+            "key"
           );
         },
-        onUpDown: diff => {
+        onUpDown: (diff) => {
           onSelect(
             generateConfig.addYear(value || viewDate, diff * YEAR_COL_COUNT),
-            'key',
+            "key"
           );
         },
         onEnter: () => {
           onPanelChange(
-            sourceMode === 'date' ? 'date' : 'month',
-            value || viewDate,
+            sourceMode === "date" ? "date" : "month",
+            value || viewDate
           );
         },
       }),
@@ -63,7 +64,7 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
   };
 
   return (
-    <div className={panelPrefixCls}>
+    <div className={classNames(panelPrefixCls, "tw-flex tw-flex-col")}>
       <YearHeader
         {...props}
         prefixCls={prefixCls}
@@ -74,15 +75,15 @@ function YearPanel<DateType>(props: YearPanelProps<DateType>) {
           onDecadeChange(1);
         }}
         onDecadeClick={() => {
-          onPanelChange('decade', viewDate);
+          onPanelChange("decade", viewDate);
         }}
       />
       <YearBody
         {...props}
         prefixCls={prefixCls}
-        onSelect={date => {
-          onPanelChange(sourceMode === 'date' ? 'date' : 'month', date);
-          onSelect(date, 'mouse');
+        onSelect={(date) => {
+          onPanelChange(sourceMode === "date" ? "date" : "month", date);
+          onSelect(date, "mouse");
         }}
       />
     </div>

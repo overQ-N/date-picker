@@ -1,8 +1,9 @@
-import * as React from 'react';
-import MonthHeader from './MonthHeader';
-import MonthBody, { MONTH_COL_COUNT } from './MonthBody';
-import type { CellRender, PanelSharedProps } from '../../interface';
-import { createKeyDownHandler } from '../../utils/uiUtil';
+import * as React from "react";
+import MonthHeader from "./MonthHeader";
+import MonthBody, { MONTH_COL_COUNT } from "./MonthBody";
+import type { CellRender, PanelSharedProps } from "../../interface";
+import { createKeyDownHandler } from "../../utils/uiUtil";
+import classNames from "classnames";
 
 export type MonthPanelProps<DateType> = {
   cellRender?: CellRender<DateType>;
@@ -24,22 +25,22 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
 
   // ======================= Keyboard =======================
   operationRef.current = {
-    onKeyDown: event =>
+    onKeyDown: (event) =>
       createKeyDownHandler(event, {
-        onLeftRight: diff => {
-          onSelect(generateConfig.addMonth(value || viewDate, diff), 'key');
+        onLeftRight: (diff) => {
+          onSelect(generateConfig.addMonth(value || viewDate, diff), "key");
         },
-        onCtrlLeftRight: diff => {
-          onSelect(generateConfig.addYear(value || viewDate, diff), 'key');
+        onCtrlLeftRight: (diff) => {
+          onSelect(generateConfig.addYear(value || viewDate, diff), "key");
         },
-        onUpDown: diff => {
+        onUpDown: (diff) => {
           onSelect(
             generateConfig.addMonth(value || viewDate, diff * MONTH_COL_COUNT),
-            'key',
+            "key"
           );
         },
         onEnter: () => {
-          onPanelChange('date', value || viewDate);
+          onPanelChange("date", value || viewDate);
         },
       }),
   };
@@ -52,7 +53,7 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
   };
 
   return (
-    <div className={panelPrefixCls}>
+    <div className={classNames("tw-flex tw-flex-col", panelPrefixCls)}>
       <MonthHeader
         {...props}
         prefixCls={prefixCls}
@@ -63,15 +64,15 @@ function MonthPanel<DateType>(props: MonthPanelProps<DateType>) {
           onYearChange(1);
         }}
         onYearClick={() => {
-          onPanelChange('year', viewDate);
+          onPanelChange("year", viewDate);
         }}
       />
       <MonthBody<DateType>
         {...props}
         prefixCls={prefixCls}
-        onSelect={date => {
-          onSelect(date, 'mouse');
-          onPanelChange('date', date);
+        onSelect={(date) => {
+          onSelect(date, "mouse");
+          onPanelChange("date", date);
         }}
       />
     </div>

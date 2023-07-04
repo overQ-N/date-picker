@@ -1,10 +1,14 @@
-import * as React from 'react';
-import classNames from 'classnames';
-import TimeHeader from './TimeHeader';
-import type { BodyOperationRef } from './TimeBody';
-import TimeBody from './TimeBody';
-import type { PanelSharedProps, DisabledTimes, IntRange } from '../../interface';
-import { createKeyDownHandler } from '../../utils/uiUtil';
+import * as React from "react";
+import classNames from "classnames";
+import TimeHeader from "./TimeHeader";
+import type { BodyOperationRef } from "./TimeBody";
+import TimeBody from "./TimeBody";
+import type {
+  PanelSharedProps,
+  DisabledTimes,
+  IntRange,
+} from "../../interface";
+import { createKeyDownHandler } from "../../utils/uiUtil";
 
 export type SharedTimeProps<DateType> = {
   format?: string;
@@ -20,11 +24,11 @@ export type SharedTimeProps<DateType> = {
   defaultValue?: DateType;
 
   /** @deprecated Please use `disabledTime` instead. */
-  disabledHours?: DisabledTimes['disabledHours'];
+  disabledHours?: DisabledTimes["disabledHours"];
   /** @deprecated Please use `disabledTime` instead. */
-  disabledMinutes?: DisabledTimes['disabledMinutes'];
+  disabledMinutes?: DisabledTimes["disabledMinutes"];
   /** @deprecated Please use `disabledTime` instead. */
-  disabledSeconds?: DisabledTimes['disabledSeconds'];
+  disabledSeconds?: DisabledTimes["disabledSeconds"];
 
   disabledTime?: (date: DateType) => DisabledTimes;
 };
@@ -41,7 +45,7 @@ const countBoolean = (boolList: (boolean | undefined)[]) =>
 function TimePanel<DateType>(props: TimePanelProps<DateType>) {
   const {
     generateConfig,
-    format = 'HH:mm:ss',
+    format = "HH:mm:ss",
     prefixCls,
     active,
     operationRef,
@@ -57,13 +61,20 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
 
   // ======================= Keyboard =======================
   const [activeColumnIndex, setActiveColumnIndex] = React.useState(-1);
-  const columnsCount = countBoolean([showHour, showMinute, showSecond, use12Hours]);
+  const columnsCount = countBoolean([
+    showHour,
+    showMinute,
+    showSecond,
+    use12Hours,
+  ]);
 
   operationRef.current = {
     onKeyDown: (event) =>
       createKeyDownHandler(event, {
         onLeftRight: (diff) => {
-          setActiveColumnIndex((activeColumnIndex + diff + columnsCount) % columnsCount);
+          setActiveColumnIndex(
+            (activeColumnIndex + diff + columnsCount) % columnsCount
+          );
         },
         onUpDown: (diff) => {
           if (activeColumnIndex === -1) {
@@ -73,7 +84,7 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
           }
         },
         onEnter: () => {
-          onSelect(value || generateConfig.getNow(), 'key');
+          onSelect(value || generateConfig.getNow(), "key");
           setActiveColumnIndex(-1);
         },
       }),
@@ -85,7 +96,7 @@ function TimePanel<DateType>(props: TimePanelProps<DateType>) {
 
   return (
     <div
-      className={classNames(panelPrefixCls, {
+      className={classNames("tw-flex tw-flex-col", panelPrefixCls, {
         [`${panelPrefixCls}-active`]: active,
       })}
     >

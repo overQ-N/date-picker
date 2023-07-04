@@ -1,17 +1,14 @@
-import * as React from 'react';
-import DecadeHeader from './DecadeHeader';
-import DecadeBody, { DECADE_COL_COUNT } from './DecadeBody';
-import type { PanelSharedProps } from '../../interface';
-import { createKeyDownHandler } from '../../utils/uiUtil';
-import { DECADE_DISTANCE_COUNT, DECADE_UNIT_DIFF } from './constant';
+import * as React from "react";
+import DecadeHeader from "./DecadeHeader";
+import DecadeBody, { DECADE_COL_COUNT } from "./DecadeBody";
+import type { PanelSharedProps } from "../../interface";
+import { createKeyDownHandler } from "../../utils/uiUtil";
+import classNames from "classnames";
+import { DECADE_DISTANCE_COUNT, DECADE_UNIT_DIFF } from "./constant";
 
 export type DecadePanelProps<DateType> = PanelSharedProps<DateType>;
 
-export {
-  DECADE_DISTANCE_COUNT,
-  DECADE_UNIT_DIFF
-};
-
+export { DECADE_DISTANCE_COUNT, DECADE_UNIT_DIFF };
 
 function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
   const {
@@ -28,31 +25,31 @@ function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
 
   // ======================= Keyboard =======================
   operationRef.current = {
-    onKeyDown: event =>
+    onKeyDown: (event) =>
       createKeyDownHandler(event, {
-        onLeftRight: diff => {
+        onLeftRight: (diff) => {
           onSelect(
             generateConfig.addYear(viewDate, diff * DECADE_UNIT_DIFF),
-            'key',
+            "key"
           );
         },
-        onCtrlLeftRight: diff => {
+        onCtrlLeftRight: (diff) => {
           onSelect(
             generateConfig.addYear(viewDate, diff * DECADE_DISTANCE_COUNT),
-            'key',
+            "key"
           );
         },
-        onUpDown: diff => {
+        onUpDown: (diff) => {
           onSelect(
             generateConfig.addYear(
               viewDate,
-              diff * DECADE_UNIT_DIFF * DECADE_COL_COUNT,
+              diff * DECADE_UNIT_DIFF * DECADE_COL_COUNT
             ),
-            'key',
+            "key"
           );
         },
         onEnter: () => {
-          onPanelChange('year', viewDate);
+          onPanelChange("year", viewDate);
         },
       }),
   };
@@ -61,19 +58,19 @@ function DecadePanel<DateType>(props: DecadePanelProps<DateType>) {
   const onDecadesChange = (diff: number) => {
     const newDate = generateConfig.addYear(
       viewDate,
-      diff * DECADE_DISTANCE_COUNT,
+      diff * DECADE_DISTANCE_COUNT
     );
     onViewDateChange(newDate);
     onPanelChange(null, newDate);
   };
 
   const onInternalSelect = (date: DateType) => {
-    onSelect(date, 'mouse');
-    onPanelChange('year', date);
+    onSelect(date, "mouse");
+    onPanelChange("year", date);
   };
 
   return (
-    <div className={panelPrefixCls}>
+    <div className={classNames("flex flex-col", panelPrefixCls)}>
       <DecadeHeader
         {...props}
         prefixCls={prefixCls}
